@@ -11,6 +11,6 @@ The data used for the in class example is in the `penguins.csv` file and is the 
 # The Code
 - The `coding example live.do` file is the `.do` file that I coded in the lecture that Dr. LaPlant recorded.
 - The `graphing-in-stata-basic.do` file is cleaner and has some solutions that you might find helpful.
-- The `getting-started-in-R.Rmd` and `getting-started-in-R.html` are essentially replications of the  `.do` files with a fun example from [this github repo} (https://gist.github.com/andrewheiss/8e514355d75aac1a7d6b91a67b896f20)
+- The `getting-started-in-R.Rmd` and `getting-started-in-R.html` are essentially replications of the  `.do` files with a fun example from [this github repo] (https://gist.github.com/andrewheiss/8e514355d75aac1a7d6b91a67b896f20)
 
 
