@@ -1,11 +1,11 @@
 # Purpose
 This is a gentle introduction to graphing in Stata and R for Dr. LaPlant's Research Methods class.
 The materials in this repo are 100% meant to be copy and pasted to help you learn Stata and get you introduced to R. For more practice with visualizing data and coding please
-download the iris dataset. I highly reccomend that you check out [Andrew Heiss's excellent materials](https://datavizm20.classes.andrewheiss.com/) for more on data viz in R and general best practices!
+download the iris dataset. 
 
 # Who this is for
 
-The files in this repo are primarily for people who are just getting started in Stata and R. If you are just getting started perfect! If you are looking for more advanced Stata data vizualization in Stata I highly reccomend checking out [this excellent resource](https://medium.com/the-stata-guide) by [Asjad Naqvi](https://twitter.com/AsjadNaqvi)
+The files in this repo are primarily for people who are just getting started in Stata and R. If you are just getting started perfect! If you are looking for more advanced Stata data vizualization in Stata I highly reccomend checking out [this excellent resource](https://medium.com/the-stata-guide) by [Asjad Naqvi](https://twitter.com/AsjadNaqvi) or for stuff in R I highly reccomend that you check out [Andrew Heiss's excellent materials](https://datavizm20.classes.andrewheiss.com/) for more on data viz in R and general best practices!
 
 
 # The Data
