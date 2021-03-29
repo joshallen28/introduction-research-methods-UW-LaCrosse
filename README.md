@@ -5,7 +5,7 @@ download the iris dataset.
 
 # Who this is for
 
-The files in this repo are primarily for people who are just getting started in Stata and R. If you are just getting started perfect! If you are looking for more advanced Stata data vizualization in Stata I highly reccomend checking out [this excellent resource](https://medium.com/the-stata-guide) by [Asjad Naqvi](https://twitter.com/AsjadNaqvi) or for stuff in R I highly reccomend that you check out [Andrew Heiss's excellent materials](https://datavizm20.classes.andrewheiss.com/) for more on data viz in R and general best practices!
+The files in this repo are primarily for people who are just getting started in Stata and R. If you are just getting started perfect! If you are looking for more advanced Stata data vizualization I highly reccomend checking out [this excellent resource](https://medium.com/the-stata-guide) by [Asjad Naqvi](https://twitter.com/AsjadNaqvi) or for stuff in R I highly reccomend that you check out [Andrew Heiss's excellent materials](https://datavizm20.classes.andrewheiss.com/) for more on data viz in R and general best practices!
 
 
 # The Data
