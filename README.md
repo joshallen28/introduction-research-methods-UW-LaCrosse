@@ -10,7 +10,7 @@ The files in this repo are primarily for people who are just getting started in 
 
 # The Data
 
-The data used for the in class example is in the `penguins.csv` file from the [Palmer Penguins dataset](https://github.com/allisonhorst/palmerpenguins). Please use the `iris.csv` file to practice.
+The data used for the in class example is in the `penguins.csv` file from the [Palmer Penguins dataset](https://github.com/allisonhorst/palmerpenguins). Please use the `iris.csv` file for more practice!
 
 
 # The Code
