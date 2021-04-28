@@ -3,7 +3,7 @@ This is a gentle introduction to graphing in Stata and R for Dr. LaPlant's Resea
 The materials in this repo are 100% meant to be copy and pasted to help you learn Stata and get you introduced to R. 
 # Who this is for
 
-The files in this repo are primarily for people who are just getting started in `Stata` or `R`. If you are just getting started perfect! If you are looking for more advanced Stata data vizualization I highly reccomend checking out [this excellent resource](https://medium.com/the-stata-guide) by [Asjad Naqvi](https://twitter.com/AsjadNaqvi) or for stuff in R I highly reccomend that you check out [Andrew Heiss's excellent materials](https://datavizm20.classes.andrewheiss.com/) for more on data viz in R and general best practices!
+The files in this repo are primarily for people who are just getting started in `Stata` or `R`. If you are just getting started perfect! If you are looking for more advanced Stata data vizualization I highly reccomend checking out [this excellent resource](https://medium.com/the-stata-guide) by [Asjad Naqvi](https://twitter.com/AsjadNaqvi) or for stuff in R I highly reccomend that you check out [Andrew Heiss's excellent materials](https://datavizm20.classes.andrewheiss.com/) for more on data viz in R and general best practices! For a list of **free** resources in R check out the [#tidytuesday GitHub repo](https://github.com/joshallen28/tidytuesday)
 
 
 # The Data
