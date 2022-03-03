@@ -1,0 +1,23 @@
+\frametitle{Try Recreating this Figure}
+\begin{columns}
+\begin{column}[T]{0.5\textwidth}
+    \resizebox{\textwidth}{!}{%
+    \includegraphics{hist.png}}
+\end{column}
+\hfill
+\begin{column}{0.5\textwidth}
+\begin{verbatim}
+
+clear
+*this will generate fake data
+set seed 1994
+
+set obs 1000
+
+ g y = rnormal(0,1) /* mean = 0, sd = 1 */
+
+
+
+\end{verbatim}
+\end{column}
+\end{columns}

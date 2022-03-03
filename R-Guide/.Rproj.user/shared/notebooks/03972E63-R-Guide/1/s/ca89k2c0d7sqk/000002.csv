@@ -1,0 +1,2 @@
+"0","knitr::opts_chunk$set(echo = TRUE, include = TRUE, warning = FALSE,"
+"0","                      message = FALSE, cache = TRUE)"

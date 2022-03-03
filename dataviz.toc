@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{Data Vizualization a Crash Course}{2}{0}{1}
+\beamer@sectionintoc {2}{Coding}{11}{0}{2}
+\beamer@sectionintoc {3}{Basics in Stata}{22}{0}{3}
+\beamer@sectionintoc {4}{Coding Time}{26}{0}{4}
+\beamer@sectionintoc {5}{Appendix}{32}{0}{5}
