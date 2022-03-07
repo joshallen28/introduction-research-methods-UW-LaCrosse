@@ -2,17 +2,16 @@
 title: "R-Guide"
 author: "Joshua Allen"
 date: "6/11/2021"
-output: 
-  html_document: 
-    toc: yes
-  pdf_document: 
+output:
+  tufte::tufte_html: default
+  tufte::tufte_handout:
+    citation_package: natbib
     latex_engine: xelatex
-    toc: yes 
 ---
 
 ```{r, include= FALSE}
 knitr::opts_chunk$set(echo = TRUE, include = TRUE, warning = FALSE,
-                      message = FALSE, cache = TRUE)
+                      message = FALSE, cache = TRUE, fig.align = "center", tidy = "styler")
 ```
 
 
@@ -43,8 +42,7 @@ theme_allen = function(){
 
 
 
-Inspired by [Andy Phillips](https://www.andyphilips.com/) I decided to write 
-my own `R` guide mostly as a note to myself and to help you all get started for the `R` problem sets in this class. The one I was given is pretty base `R` heavy so I tried to rewrite it using the `tidyverse`. This document was written in `Rmarkdown` so you will see how this file went from `R-Guide.Rmd` to `R-Guide.html` or `R-Guide.pdf`.
+In this class we will use `R` to complete various assignments in class. Here I will outline basic stuff as a reference for you all.. This document was written in `Rmarkdown` so you will see how this file went from `R-Guide.Rmd` to `R-Guide.html` or `R-Guide.pdf`.
 
 # Why R?
 
@@ -108,14 +106,14 @@ ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g , color = spe
 ```
 
 
-Both have some sufficient amount of complexity but this quickly becomes a lot more complicated as you have more and more values that you need to color in the graph. It is also really hard to track because you are tricking `Stata` by defining your own program and individually coloring each line based on local macros and then you need to define each shape. Additionally, the `Stata` plot has a lot of issues with overplotting and the hex colors don't align with the actual specified values
+Both have a sufficient amount of complexity, but this quickly becomes a lot more complicated as you have more and more values that you need to color in the graph. It is also hard to track because you are tricking `Stata` by defining your own program and individually coloring each line based on local macros and then you need to define each shape. Additionally, the `Stata` plot has a lot of issues with overplotting, and the hex colors don't align with the actual specified values
 
-The free aspect makes it incredibly attractive for a lot of people not including the fact that in the data science world `R` is one of the most popular languages. There are lots of debates about `R` versus `Python` versus `Julia` but knowing any of these three will help you learn the other because they are object oriented languages. `R` is not inherently better than `Stata` but it is not as widely used and the fundamentals you learn in `Stata` are not as transferable to other programming languages. 
+The free aspect makes it incredibly attractive for many people, not including the fact that in the data science world, `R` is one of the most popular languages. There are lots of debates about `R` versus `Python` versus `Julia`, but knowing any of these three will help you learn the other because they are object-oriented languages. `R` is not inherently better than `Stata`, but it is not as widely used, and the fundamentals you learn in `Stata` are not as transferable to other programming languages. 
 
 ## Getting Started 
 
-Before we start getting into R and how to use it we should start with workflow.
-It is important to adopt what is known as project oriented workflow  not only
+Before we start getting into R and how to use it, we should start with workflow.
+It is essential to adopt what is known as project-oriented workflow  not only
 reproducibility, but to guard yourself against the possibility of arson.
 
 ```
@@ -402,13 +400,8 @@ However whenever possible you want to do this through code. It is transparent an
 
 ## `dplyr`
 
- "Happy families are all alike; every unhappy family is unhappy in its own way." - Leon Tolstoy. 
- 
- Data is often talked about the in the same way. All clean datasets are alike in structure and dignity. Every messy dataset is messy in its own special way.
 
-
-
-`dplyr` is the tidyverse way to manipulate data and an all around great package. But you need to get the basic functions right. Cleaning data is what you will spend the most time on. 
+`dplyr` is a great package that I use all the time to clean data. But you need to get the basic functions right. Cleaning data is what you will spend the most time on. 
 
 
 ### Boolean Operators
@@ -559,122 +552,8 @@ Data cleaning is the vast majority of what you will be doing if you open up a da
 lm(y ~ x1 + x2 + x3, data = blah)
 
 ```
-or as complicated as a non-parametric model to estimate what is going on with millions of social posts
 
-
-
-or we are simply trying to make figures cleaning data is the skill that is the most critical one. Here is some data cleaning I did for making graphs for `tidytuesday` 
-
-```{r}
-
-pacman::p_load("tidytuesdayR", "showtext")
-
-font_add_google("Roboto", "condensed")
-
-
-bird_raw = tidytuesdayR::tt_load(2021, week = 36)
-
-bird_baths = bird_raw$bird_baths
-
-
-bird_raw = tidytuesdayR::tt_load(2021, week = 36)
-
-bird_baths = bird_raw$bird_baths
-
-
-
-
-
-
-
-plot_data =
-  bird_baths %>%
-  filter(complete.cases(.)) %>% ## Return a logical vector indicating which cases are complete, i.e., have no missing values.
-  group_by(bird_type, urban_rural, survey_year) %>% 
-  summarise(n = sum(bird_count)) %>%
-  pivot_wider(names_from = urban_rural, values_from = n) %>% # changes data from long to wide
-  mutate(pct_urban = Urban/(Rural+Urban)) %>%
-  filter(Urban > 0 & Rural > 0) %>%
-  group_by(bird_type) %>%
-  filter(n() == 2) %>%
-  ungroup()
-
-
-order_plot_data = plot_data %>% 
-  mutate(survey_year = as.character(survey_year)) %>%
-  select(-Rural, -Urban) %>%
-  pivot_wider(names_from = survey_year, values_from = pct_urban) %>%
-  mutate(delta = `2014`-`2015`)
-
-
-city = order_plot_data %>%
-  filter(delta < 0) %>%
-  pull(bird_type)
-
-camp = order_plot_data %>%
-  filter(delta > 0) %>%
-  pull(bird_type)
-
-
-
-
-allow_list_bird_moving_to_city =
-  plot_data %>%
-  filter(bird_type %in% city) %>%
-  mutate(n = Rural + Urban) %>%
-  group_by(bird_type) %>%
-  summarise(total_n = sum(n)) %>%
-  slice_max(total_n, n = 10, with_ties = FALSE) %>% # just taking the top 5 birds
-  pull(bird_type) %>% unique()
-
-allow_list_bird_moving_to_camp =
-  plot_data %>%
-  filter(bird_type %in% camp) %>%
-  mutate(n = Rural + Urban) %>%
-  group_by(bird_type) %>%
-  summarise(total_n = sum(n)) %>%
-  slice_max(total_n, n = 10, with_ties = FALSE) %>%
-  pull(bird_type) %>% unique()
-
-
-my_order = order_plot_data %>%
-  filter(
-    bird_type %in% c(allow_list_bird_moving_to_city, allow_list_bird_moving_to_camp)) %>%
-  arrange(delta) %>%
-  pull(bird_type) %>% 
-  unique()
-
-
- 
-
-  
-  
-  
-  birds_clean = plot_data %>% 
-    filter(bird_type %in% c(allow_list_bird_moving_to_city, allow_list_bird_moving_to_camp)) %>%
-    mutate(survey_year = as.character(survey_year)) %>% 
-    mutate(moving = if_else(bird_type %in% allow_list_bird_moving_to_city, 'Moving to city bird baths', 'Moving to camp bird baths')) %>% 
-    mutate(moving = toupper(moving))
-  
-  
-  
-  
-  ggplot(birds_clean, aes(x = factor(bird_type, levels = c(my_order)), y = pct_urban)) +
- geom_point(size = 4, aes(color = survey_year), alpha = .3) +
-  geom_line(aes(group = bird_type), color = 'black', size = .5,
-            arrow = arrow(length=unit(0.10,"cm"), ends="last", type = "closed")) +
-  geom_hline(yintercept = 0.5, color = 'grey60') +
-  geom_hline(yintercept = 0.5, color = 'grey60') +
-  coord_flip() + 
-  labs(x = NULL, y = "Percent Birds Moving", color = NULL) +
-  facet_wrap(vars(moving), scales = 'free_y') +
-  scale_y_continuous(limits = c(0,1), labels = scales::percent) +
-  scale_color_manual(values = c("#feca00", "#d36328")) +
-  theme_allen()
-```
-
-cleaning the data is the skill that you need to get good at or else the rest of what you do won't really matter.
-
+or are making graphs. Data cleaning is a skill that you have to practice in order to make any claims about your data. 
 ### `select`
 
 
@@ -814,8 +693,8 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
 ```
 
 Like `Stata` you need to add stuff to customize plot when you add stuff instead
-of `,options` you use `+` and then add stuff. Here is an example of stuff you can add, but
-this is only the tip of the stuff iceberg.
+of `,options` you use `+` and then add stuff. Here is an example of things you can add, but
+this is only the tip of the iceberg.
 
 ```{r scatter-plot-labs}
 
@@ -827,7 +706,7 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
 ```
 
 So far we have only done stuff working within `aes`. Here is one of the most common mistakes 
-when working in `ggplot` I still do this!
+when working in `ggplot`, I still do this!
 
 
 
@@ -842,9 +721,9 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g,
 ```
 
 I wanted to change  the color of the dots. However I did this
-in the `aes()`. If you look back then you will remember that  `aes` will look to put stuff in your 
-plots based off of **columns** in your dataset. So to change the look of your plot you need to do it
-**outside** of `aes()`. So lets correct that and then change the shape of the points.
+in the `aes()`. If you look back then, you will remember that  `aes` will look to put stuff in your 
+plots based on **columns** in your dataset. So to change the look of your plot, you need to do it
+**outside** of `aes()`. So let’s correct that and then change the shape of the points.
 
 ```{r real-changes}
 ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
@@ -856,7 +735,7 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
 
 ## Subsetting data in ggplot
 
-Lets say you want to look at a subset of the data. That is easy because you can add in your friend `filter`
+Let’s say you want to look at a subset of the data. That is easy because you can add in your friend `filter`.
 
 
 ```{r female-plot}
@@ -886,7 +765,7 @@ penguins %>%
 ```
 
 
-The difference is a matter of taste if we are being honest. I learned it the first way so that is what I tend to do. IN the bleow plots lets just change the scale of the X and Y axis and then combine the two plots using `patchwork`.
+The difference is a matter of taste if we are being honest. I learned it the first way, so I tend to do it that way. In the below plots let’s change the scale of the X and Y axis and then combine the two plots using `patchwork`.
 
 ```{r female-plot-for-combo, message=FALSE, warning=FALSE}
 library(scales)
@@ -920,10 +799,10 @@ fem_plot/male_plot
 
 # Themes in ggplot
 
-Themes are really just ways for you to customize all the stuff that isn't data in your plot. Themes make your graphs better looking and can make them stand out.
+Themes are just ways to customize all the stuff that isn't data in your plot. Themes make your graphs better looking and can make them stand out.
 
-Themes in `ggplot` get pretty intense very quickly. Most people write their own themes but this gets
-scary when you are first learning ggplot we will use `ggthemes` first but as an example we will look at one I wrote for 
+The themes in `ggplot` get pretty intense very quickly. Lots of people write their own themes, but this gets
+scary when you are first learning ggplot, we will use `ggthemes` first, but as an example, we will look at one I wrote for 
 a class assignment that I use a lot. 
 
 ```
@@ -947,7 +826,7 @@ theme_allen = function(){
 
 ```
 
-This is what this looks like in action
+This is what this looks like in action.
 
 ```{r multiplot}
 theme_allen = function(){
@@ -984,7 +863,7 @@ ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g , color = spe
 ## What else can I do in `ggplot`?
 
 
-`ggplot` has a ton of flexibility that you can take courses on so I will just provide some examples of graphics I have made in `ggplot`. 
+`ggplot` has a ton of flexibility that you can take courses on, so I will provide some examples of graphics I have made in `ggplot`. 
 
 
 ```{r penguins-example-with-fonts}
@@ -1005,10 +884,10 @@ theme_set(
 
 ```
 
-Here is how you can make maps in `ggplot`
+You can make maps in  `ggplot`.
 
 
-```{r map, cache = TRUE}
+```{r map, cache = TRUE, echo=FALSE}
 
 pacman::p_load("osmdata", "ggmap", "tidygeocoder", "sf")
 
@@ -1104,7 +983,7 @@ add_geom = bars_geocode %>%
 
 # Other Useful Stuff
 
-So for this class you are going to have to make some tables and there are a lot of mistakes you can make when you are trying to manually format tables. But, just as important it is tedious and annoying so why would you waste time doing that if there is an automated way to do that? We have already loaded in our friend `modelsummary` and since this is an `Rmarkdown` document our friend `kable` is also loaded. So lets see some examples of how to do this. Lets create a fake dataset about the effect of going to math camp on GRE scores.
+So for this class, you will have to make some tables, and there are a lot of mistakes you can make when you are trying to format tables manually. But, just as important, it is tedious and annoying, so why would you waste time doing that if there is an automated way to do that? We have already loaded in our friend `modelsummary`, and since this is a `Rmarkdown` document, our friend `kable` is also loaded. So let’s see some examples of how to do this. Let’s create a fake dataset about the effect of going to math camp on GRE scores.
 
 
 
@@ -1143,7 +1022,7 @@ grade_data = tibble(id = 1:n_people,
 
 ```
 
-So here are a bunch of models that you should not worry about. We are using a mixture of base `R` functions and `tidyverse` friends.
+So here are a bunch of models that you should not worry about. We use a mixture of base `R` functions and `tidyverse` friends.
 
 
 ```{r models, results='hide'}
@@ -1176,7 +1055,7 @@ ipw_model = lm(final_grade ~ math_camp, weights = ipw, data = camp_weights)
   tidy(ipw_model)
 ```
 
-So we have a bunch of  statsy stuff we want to put in a table so lets do that!
+So we have a bunch of statsy stuff we want to put in a table so let’s do that!
 
 
 
@@ -1194,7 +1073,7 @@ modelsummary(list("Naive" = naive_model, "Confounders" = adjusted_mod,
 
 ```
 
-Now we have a pretty table of stats results. Lets not worry to much about the statsy stuff that we did in this case because that is a whole course that somebody far more qualified than I should be teaching you. 
+Now we have a pretty table of stats results. Don’t worry too much about the statsy stuff that we did in this case because that is a whole course that somebody far more qualified than I should be teaching you. 
 
 
 
@@ -1202,7 +1081,7 @@ Now we have a pretty table of stats results. Lets not worry to much about the st
 datasummary(gpa ~ Mean, data = grade_data)
 ```
 
-Doing individual tables for each variable is going to be annoying for you and the reader so what if we wanted to add more variables and more stats? You can slowly build this up, but looking at the help documentation is going to be your best bet! 
+Doing individual tables for each variable will be annoying for you and the reader, so what if we wanted to add more variables and more stats? You can slowly build this up, but looking at the help documentation will be your best bet! 
 
 
 ```{r summary-sd}
@@ -1214,7 +1093,7 @@ datasummary(gpa + gre ~ Mean + SD,
 
 ## Getting Started
 
-- [R4Ds](https://r4ds.had.co.nz/index.html) is perhaps the ultimate starter book for the `tidyverse` writtent by the authors of the `tidyverse` and should be your first stop.
+- [R4Ds](https://r4ds.had.co.nz/index.html) is perhaps the ultimate starter book for the `tidyverse` written by the authors of the `tidyverse` and should be your first stop.
 
 - [Hands on Programing](https://rstudio-education.github.io/hopr/)
 
@@ -1225,7 +1104,7 @@ datasummary(gpa + gre ~ Mean + SD,
 [It really is definitive](https://bookdown.org/yihui/rmarkdown/)
 
 ## ggplot
-Perhaps `R's` most beloved and used package in the `tidyverse`. I will say that I never really read anything on `ggplot` and tend to go full steam ahead into doing stuff. But these are the resources I use most often 
+Perhaps `R's` most beloved and used package in the `tidyverse`. I will say that I never really read anything on `ggplot` and tend to go full steam ahead into doing stuff. But these are the resources I use most often. 
 
 - [Cookbook](https://r-graphics.org/)
 - [All about ggplot](https://ggplot2-book.org/index.html)
@@ -1233,13 +1112,12 @@ Perhaps `R's` most beloved and used package in the `tidyverse`. I will say that 
 - [V influential book in the social sciences](https://socviz.co/)
 
 ## misc
-Working with text data has a lot of idiosyncracies and takes a lot of wrangling.
-I switched from Word to LaTeX a few years ago, but never really liked beamer presentations. 
+Working with text data has a lot of idiosyncrasies and takes a lot of wrangling.
+I switched from Word to LaTeX a few years ago but never liked beamer presentations. 
 So I use `xaringan` to create all my slides. 
 
 - [tidytext](https://www.tidytextmining.com/index.html)
 - [xaringan primer](https://apreshill.github.io/data-vis-labs-2018/slides.html)
-
 
 
 
